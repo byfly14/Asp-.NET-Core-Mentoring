@@ -1,5 +1,6 @@
 ﻿using Asp_.NET_Core_Mentoring_Module1.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
 {
@@ -15,7 +16,8 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
         // GET: Products
         public ActionResult Index()
         {
-            return View(Context.Products);
+            return View(Context.Products.Include(p => p.Category)
+                                              .Include(p => p.Supplier));
         }
 
         //// GET: Products/Details/5
