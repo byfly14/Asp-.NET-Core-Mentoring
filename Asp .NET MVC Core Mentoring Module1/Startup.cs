@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Asp_.NET_Core_Mentoring_Module1.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +24,8 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
                 {
                     options.UseSqlServer(Configuration.GetConnectionString("NorthWood"));
                 });
+
+            services.AddScoped(typeof(IRepository<>), typeof(SqlRepository<>));
 
             services.AddControllersWithViews();
         }

@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Asp_.NET_Core_Mentoring_Module1.Common.Entities.Categories>
+﻿@using System.Text.RegularExpressions
+@model IEnumerable<Asp_.NET_Core_Mentoring_Module1.Common.Entities.Categories>
 
 @{
     ViewData["Title"] = "Categories";
@@ -13,13 +14,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
+                @Regex.Replace(Html.DisplayNameFor(model => model.CategoryName), @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Description)
+                @Regex.Replace(Html.DisplayNameFor(model => model.Description), @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Picture)
+                @Regex.Replace(Html.DisplayNameFor(model => model.Picture), @"((?<=\p{Ll})\p{Lu})|((?!\A)\p{Lu}(?>\p{Ll}))", " $0")
             </th>
             <th></th>
         </tr>
@@ -37,8 +38,8 @@
                 <img src="data:image/bmp;base64, @Convert.ToBase64String(item.Picture)" alt="Red dot" />
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a>
                 <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
             </td>
         </tr>

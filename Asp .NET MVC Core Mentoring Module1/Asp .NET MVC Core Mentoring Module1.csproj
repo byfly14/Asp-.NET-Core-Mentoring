@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Asp .NET Core Mentoring Module1.Data\Asp .NET Core Mentoring Module1.Data.csproj" />
+    <ProjectReference Include="..\Asp. NET Core Mentoring Module1.Helpers\Asp. NET Core Mentoring Module1.Helpers.csproj" />
   </ItemGroup>
 
 

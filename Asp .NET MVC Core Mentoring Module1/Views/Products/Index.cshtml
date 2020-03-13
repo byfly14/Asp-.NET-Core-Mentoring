@@ -1,10 +1,11 @@
-﻿@model IEnumerable<Asp_.NET_Core_Mentoring_Module1.Common.Entities.Products>
+﻿@using Asp._NET_Core_Mentoring_Module1.Helpers
+@model IEnumerable<Asp_.NET_Core_Mentoring_Module1.Common.Entities.Products>
 
 @{
     ViewData["Title"] = "Products";
 }
 
-    <h1>Products</h1>
+<h1>Products</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -13,37 +14,37 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductName)
+                @TitleHelper.FormatTitle(Html.DisplayNameFor(model => model.ProductName));
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.QuantityPerUnit)
+                @TitleHelper.FormatTitle(Html.DisplayNameFor(model => model.QuantityPerUnit));
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UnitPrice)
+                @TitleHelper.FormatTitle(Html.DisplayNameFor(model => model.UnitPrice));
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UnitsInStock)
+                @TitleHelper.FormatTitle(Html.DisplayNameFor(model => model.UnitsInStock));
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UnitsOnOrder)
+                @TitleHelper.FormatTitle(Html.DisplayNameFor(model => model.UnitsOnOrder));
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ReorderLevel)
+                @TitleHelper.FormatTitle(Html.DisplayNameFor(model => model.ReorderLevel));
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Discontinued)
+                @TitleHelper.FormatTitle(Html.DisplayNameFor(model => model.Discontinued));
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category.CategoryName)
+                @TitleHelper.FormatTitle(Html.DisplayNameFor(model => model.Category));
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Supplier.CompanyName)
+                @TitleHelper.FormatTitle(Html.DisplayNameFor(model => model.Supplier));
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductName)
@@ -73,11 +74,14 @@
                 @Html.DisplayFor(modelItem => item.Supplier.CompanyName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a>
                 <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
+    
+    
+
 </table>
