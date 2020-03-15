@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using Asp_.NET_Core_Mentoring_Module1.Logging;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Models;
 
 namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
 {
+    [ServiceFilter(typeof(LoggingActionFilter))]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
-
         public IActionResult Index()
         {
             return View();
