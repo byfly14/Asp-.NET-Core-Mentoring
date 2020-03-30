@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using Asp_.NET_Core_Mentoring_Module1.Data;
 using Asp_.NET_Core_Mentoring_Module1.Logging;
+using Asp_.NET_MVC_Core_Mentoring_Module1.Middlewares;
+using Asp_.NET_MVC_Core_Mentoring_Module1.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +34,9 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
 
             services.AddScoped(typeof(IRepository<>), typeof(SqlRepository<>));
             services.AddScoped( typeof(IUnitOfWork), typeof(UnitOfWork));
+            services.AddScoped(typeof(IDiskImageCacheService), typeof(DiskImageCacheService));
+
+            services.AddMemoryCache();
 
             services.AddControllersWithViews();
 
@@ -69,9 +74,15 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            app.UseMiddleware<ImageCacheMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(name: "images",
+                    pattern: "images/{id:int}",
+                    defaults: new { controller = "Categories", action = "GetCategoryImage" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

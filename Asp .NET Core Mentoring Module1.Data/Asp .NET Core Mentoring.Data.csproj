@@ -1,29 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>Asp_.NET_MVC_Core_Mentoring_Module1</RootNamespace>
+    <RootNamespace>Asp_.NET_Core_Mentoring_Module1.Data</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="Serilog.Extensions.Logging.File" Version="2.0.0" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Asp .NET Core Mentoring Module1.Data\Asp .NET Core Mentoring Module1.Data.csproj" />
-    <ProjectReference Include="..\Asp .NET Core Mentoring Module1.Logging\Asp .NET Core Mentoring Module1.Logging.csproj" />
-    <ProjectReference Include="..\Asp. NET Core Mentoring Module1.Helpers\Asp. NET Core Mentoring Module1.Helpers.csproj" />
+    <ProjectReference Include="..\Asp .NET Core Mentoring Module1.Common\Asp .NET Core Mentoring.Common.csproj" />
   </ItemGroup>
-
-
 
 </Project>

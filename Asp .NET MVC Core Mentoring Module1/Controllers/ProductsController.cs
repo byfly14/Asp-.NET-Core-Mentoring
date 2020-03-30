@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Asp._NET_Core_Mentoring_Module1.Helpers;
 using Asp_.NET_Core_Mentoring_Module1.Common.Entities;
 using Asp_.NET_Core_Mentoring_Module1.Data;
 using Asp_.NET_Core_Mentoring_Module1.Logging;
@@ -61,17 +60,9 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([FromForm] Products product)
         {
-            void CreateAction()
-            {
-                _unitOfWork.Repository<Products>().Create(product);
-                _unitOfWork.Commit();
-            }
-
-            if (!TransactionHelper.TryPerformTransaction(_unitOfWork.Context, CreateAction, out var exception))
-            {
-                throw exception;
-            }
-
+            _unitOfWork.Repository<Products>().Create(product);
+            _unitOfWork.Commit();
+            
             return RedirectToAction(nameof(Index));
         }
 
@@ -95,16 +86,8 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
                 return BadRequest(ModelState);
             }
 
-            void UpdateAction()
-            {
-                _unitOfWork.Repository<Products>().Update(product);
-                _unitOfWork.Commit();
-            }
-
-            if (!TransactionHelper.TryPerformTransaction(_unitOfWork.Context, UpdateAction, out var exception))
-            {
-                throw exception;
-            }
+            _unitOfWork.Repository<Products>().Update(product);
+            _unitOfWork.Commit();
 
             return RedirectToAction(nameof(Index));
         }
@@ -122,16 +105,8 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete([FromForm] Products product)
         {
-            void DeleteAction()
-            {
-                _unitOfWork.Repository<Products>().Delete(product);
-                _unitOfWork.Commit();
-            }
-
-            if (!TransactionHelper.TryPerformTransaction(_unitOfWork.Context, DeleteAction, out var exception))
-            {
-                throw exception;
-            }
+            _unitOfWork.Repository<Products>().Delete(product);
+            _unitOfWork.Commit();
 
             return RedirectToAction(nameof(Index));
         }

@@ -33,8 +33,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
-                <td>
-                    <img src="@ImageHelper.GetImageBase64String(item.Picture)" />
+                <td style="display: grid">
+                    <img src="@ImageHelper.GetImageBase64String(item.Picture)" alt="Cannot display image." />
+                    <a asp-action="GetCategoryImage" asp-route-id="@item.CategoryId">Download Category Image</a>
+                    <a asp-action="AddFile" asp-route-id="@item.CategoryId">Upload New Category Image</a>
                 </td>
             </tr>
         }

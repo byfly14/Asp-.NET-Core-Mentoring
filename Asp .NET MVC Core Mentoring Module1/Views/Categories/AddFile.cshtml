@@ -1,0 +1,23 @@
+﻿@model Asp_.NET_Core_Mentoring_Module1.Common.Entities.Categories
+
+@{
+    ViewData["Title"] = "AddFile";
+}
+
+<h1>AddFile</h1>
+
+<h4>Categories</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddFile" asp-controller="Categories" method="post" enctype="multipart/form-data">
+            <input type="file" name="uploadedFile" value="Upload new image"/><br>
+            <input type="submit" value="Save"/>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
