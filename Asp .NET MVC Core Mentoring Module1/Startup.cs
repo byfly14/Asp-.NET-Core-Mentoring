@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using Asp_.NET_Core_Mentoring_Module1.Data;
 using Asp_.NET_Core_Mentoring_Module1.Logging;
-using Asp_.NET_MVC_Core_Mentoring_Module1.Middlewares;
+using Asp_.NET_MVC_Core_Mentoring_Module1.Helpers;
+using Asp_.NET_MVC_Core_Mentoring_Module1.Middleware;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -35,6 +36,7 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
             services.AddScoped(typeof(IRepository<>), typeof(SqlRepository<>));
             services.AddScoped( typeof(IUnitOfWork), typeof(UnitOfWork));
             services.AddScoped(typeof(IDiskImageCacheService), typeof(DiskImageCacheService));
+            services.AddScoped(typeof(IViewDataHelper), typeof(ViewDataHelper));
 
             services.AddMemoryCache();
 

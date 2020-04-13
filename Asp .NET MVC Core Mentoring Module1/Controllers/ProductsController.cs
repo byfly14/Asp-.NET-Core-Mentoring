@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Asp_.NET_Core_Mentoring_Module1.Common.Entities;
 using Asp_.NET_Core_Mentoring_Module1.Data;
 using Asp_.NET_Core_Mentoring_Module1.Logging;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Configuration;
 
 namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
@@ -49,9 +47,6 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
         // GET: Products/Create
         public ActionResult Create()
         {
-            var (categories, suppliers) = GetViewBagData();
-            ViewBag.Categories = categories;
-            ViewBag.Suppliers = suppliers;
             return View();
         }
 
@@ -69,9 +64,6 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
         // GET: Products/Edit/5
         public ActionResult Edit(int id)
         {
-            var (categories, suppliers) = GetViewBagData();
-            ViewBag.Categories = categories;
-            ViewBag.Suppliers = suppliers;
             var viewData = _unitOfWork.Repository<Products>().GetById(id);
             return View(viewData);
         }
@@ -109,17 +101,6 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
             _unitOfWork.Commit();
 
             return RedirectToAction(nameof(Index));
-        }
-
-        private (List<SelectListItem> categories, List<SelectListItem> suppliers) GetViewBagData()
-        {
-            return (new List<SelectListItem>(_unitOfWork.Repository<Categories>()
-                        .GetAll()
-                        .Select(c => new SelectListItem(c.CategoryName, c.CategoryId.ToString()))),
-                    new List<SelectListItem>(_unitOfWork.Repository<Suppliers>()
-                        .GetAll()
-                        .Select(c => new SelectListItem(c.CompanyName, c.SupplierId.ToString()))));
-
         }
     }
 }

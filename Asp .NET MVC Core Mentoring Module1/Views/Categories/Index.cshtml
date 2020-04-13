@@ -1,12 +1,11 @@
 ﻿@using System.Text.RegularExpressions
 @using Asp._NET_Core_Mentoring_Module1.Helpers
+@using Asp_.NET_MVC_Core_Mentoring_Module1.Helpers
 @model IEnumerable<Asp_.NET_Core_Mentoring_Module1.Common.Entities.Categories>
 
 @{
     ViewData["Title"] = "Categories";
 }
-
-<h1>Categories</h1>
 
 <table class="table">
     <thead>
@@ -35,10 +34,25 @@
                 </td>
                 <td style="display: grid">
                     <img src="@ImageHelper.GetImageBase64String(item.Picture)" alt="Cannot display image." />
-                    <a asp-action="GetCategoryImage" asp-route-id="@item.CategoryId">Download Category Image</a>
-                    <a asp-action="AddFile" asp-route-id="@item.CategoryId">Upload New Category Image</a>
+                    <download-image image-id="@item.CategoryId"></download-image>
+                    @Html.DownloadImage(item.CategoryId)
+                    <a asp-action="Upload" asp-route-id="@item.CategoryId">Upload New Category Image</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Header
+{
+    <div style="margin-left: 10px; width: 100%; display: flex; justify-content: center;">
+        <h1 style="margin-left: 10px">Category header</h1>
+    </div>
+}
+
+@section Footer
+{
+    <p style="margin-left: 10px; width: 100%; display: flex; justify-content: center;">
+        NB: You cannot edit any category.
+    </p>
+}

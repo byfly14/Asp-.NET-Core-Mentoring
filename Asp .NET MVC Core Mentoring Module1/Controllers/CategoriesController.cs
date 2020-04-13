@@ -42,13 +42,13 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
             return GetImageFile(id);
         }
         
-        public ActionResult AddFile(int id)
+        public ActionResult Upload(int id)
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddFile(IFormFile uploadedFile, [FromRoute] int id)
+        public IActionResult Upload(IFormFile uploadedFile, [FromRoute] int id)
         {
             var category = _unitOfWork.Repository<Categories>().GetById(id);
             

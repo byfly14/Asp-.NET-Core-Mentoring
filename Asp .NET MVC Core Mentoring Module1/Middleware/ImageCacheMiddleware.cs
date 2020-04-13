@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Services;
 using Microsoft.AspNetCore.Http;
 
-namespace Asp_.NET_MVC_Core_Mentoring_Module1.Middlewares
+namespace Asp_.NET_MVC_Core_Mentoring_Module1.Middleware
 {
     public class ImageCacheMiddleware
     {

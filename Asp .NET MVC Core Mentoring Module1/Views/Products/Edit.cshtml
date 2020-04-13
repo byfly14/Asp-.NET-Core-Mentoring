@@ -1,12 +1,11 @@
-﻿@model Asp_.NET_Core_Mentoring_Module1.Common.Entities.Products
+﻿@using Asp_.NET_Core_Mentoring_Module1.Common.Entities
+@model Asp_.NET_Core_Mentoring_Module1.Common.Entities.Products
+@inject Asp_.NET_MVC_Core_Mentoring_Module1.Helpers.IViewDataHelper ViewDataHelper
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Products</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,12 +19,12 @@
             </div>
             <div class="form-group">
                 <label title="Supplier" asp-for="SupplierId" class="control-label"></label>
-                <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.Suppliers"></select>
+                <select asp-for="SupplierId" class="form-control" asp-items="ViewDataHelper.GetSelectListItems<Suppliers>()"></select>
                 <span asp-validation-for="SupplierId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label title="Category" asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewDataHelper.GetSelectListItems<Categories>()"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">

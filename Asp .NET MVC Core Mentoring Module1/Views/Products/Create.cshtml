@@ -1,13 +1,11 @@
-﻿@model Asp_.NET_Core_Mentoring_Module1.Common.Entities.Products
+﻿@using Asp_.NET_Core_Mentoring_Module1.Common.Entities
+@model Asp_.NET_Core_Mentoring_Module1.Common.Entities.Products
+@inject Asp_.NET_MVC_Core_Mentoring_Module1.Helpers.IViewDataHelper ViewDataHelper
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Products</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -19,11 +17,11 @@
             </div>
             <div class="form-group">
                 <label asp-for="SupplierId" class="control-label"></label>
-                <select asp-for="SupplierId" class ="form-control" asp-items="ViewBag.Suppliers"></select>
+                <select asp-for="SupplierId" class="form-control" asp-items="ViewDataHelper.GetSelectListItems<Suppliers>()"></select>
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
-                <select asp-for="CategoryId" class ="form-control" asp-items="ViewBag.Categories"></select>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewDataHelper.GetSelectListItems<Categories>()"></select>
             </div>
             <div class="form-group">
                 <label asp-for="QuantityPerUnit" class="control-label"></label>

@@ -87,7 +87,7 @@ namespace Asp_.NET_Core_Mentoring.UnitTests
         }
 
         [TestCase(1)]
-        public void CategoriesController_AddFile_SuccessfullySaveFile(int id)
+        public void CategoriesController_Upload_SuccessfullySaveFile(int id)
         {
             var filePath = Path.Combine(TestContext.CurrentContext.TestDirectory, "the-mandalorian-4k-2019-tv-show-scaled.jpg");
             var expectedBytes = File.ReadAllBytes(filePath);
@@ -96,7 +96,7 @@ namespace Asp_.NET_Core_Mentoring.UnitTests
             {
                 var file = new FormFile(fs, 0, fs.Length, "temp", "the-mandalorian-4k-2019-tv-show-scaled.jpg");
 
-                _controller.AddFile(file, id);
+                _controller.Upload(file, id);
 
                 _repository.Verify(c => c.Update(It.IsAny<Categories>()), Times.Once);
                 var actualBytes = _categories.First(c => c.CategoryId == id).Picture;
