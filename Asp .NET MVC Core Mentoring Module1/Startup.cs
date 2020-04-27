@@ -5,19 +5,23 @@ using Asp_.NET_MVC_Core_Mentoring_Module1.Helpers;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Middleware;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace Asp_.NET_MVC_Core_Mentoring_Module1
 {
     public class Startup
     {
+        readonly string _myAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -40,9 +44,31 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
 
             services.AddMemoryCache();
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: _myAllowSpecificOrigins,
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200",
+                            "http://localhost:8088");
+                    });
+            });
+
+
+
             services.AddControllersWithViews();
 
             services.AddMvc();
+
+            services.AddMvcCore().AddApiExplorer();
+
+            //swagger/v1/swagger.json
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.CustomOperationIds(description => (description.ActionDescriptor as ControllerActionDescriptor)?.ActionName);
+            });
+
             services.AddScoped<LoggingActionFilter>();
             services.AddLogging(logging =>
             {
@@ -69,6 +95,8 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCors(_myAllowSpecificOrigins);
+
             app.UseStatusCodePages();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -78,6 +106,7 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
             app.UseAuthorization();
             
             app.UseMiddleware<ImageCacheMiddleware>();
+            app.UseSwagger(o => o.SerializeAsV2 = true);
 
             app.UseEndpoints(endpoints =>
             {

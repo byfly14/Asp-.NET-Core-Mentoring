@@ -15,5 +15,8 @@ namespace Asp_.NET_Core_Mentoring_Module1.Common.Entities
         public byte[] Picture { get; set; }
 
         public virtual ICollection<Products> Products { get; set; }
+
+        public override string ToString() =>
+            $"CategoryId: {CategoryId}, CategoryName: {CategoryName}, Description: {Description};";
     }
 }

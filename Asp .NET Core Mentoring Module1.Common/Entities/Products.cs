@@ -28,5 +28,10 @@ namespace Asp_.NET_Core_Mentoring_Module1.Common.Entities
         public virtual Categories Category { get; set; }
         public virtual Suppliers Supplier { get; set; }
         public virtual ICollection<OrderDetails> OrderDetails { get; set; }
+
+        public override string ToString()
+        {
+            return $"ProductId: {ProductId}, ProductName: {ProductName}";
+        }
     }
 }

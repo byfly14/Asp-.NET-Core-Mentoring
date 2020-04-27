@@ -36,7 +36,6 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
 
         [HttpGet]
         [Route("/attributesRoutingImage/{id:int}")]
-
         public FileStreamResult GetCategoryImageViaAttributeRouting(int id)
         {
             return GetImageFile(id);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Asp._NET_Core_Mentoring_Module1.Helpers
 {
@@ -27,6 +28,17 @@ namespace Asp._NET_Core_Mentoring_Module1.Helpers
             var bytes = SkipGarbageBytes(imageBytes);
             fs.Write(bytes, 0, bytes.Length);
             fs.Flush();
+            fs.Seek(0, SeekOrigin.Begin);
+
+            return fs;
+        }
+
+        public static async Task<FileStream> CreateImageFileStreamAsync(string filePath, byte[] imageBytes)
+        {
+            var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            var bytes = SkipGarbageBytes(imageBytes);
+            await fs.WriteAsync(bytes, 0, bytes.Length).ConfigureAwait(false);
+            await fs.FlushAsync().ConfigureAwait(false);
             fs.Seek(0, SeekOrigin.Begin);
 
             return fs;

@@ -19,7 +19,7 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Components
                 dictionary[$"{Request.RouteValues["action"]}"] = (controller: $"{Request.RouteValues["controller"]}", action: $"{Request.RouteValues["action"]}");
             }
 
-            return View(dictionary);
+            return await Task.FromResult(View(dictionary));
         }
     }
 }

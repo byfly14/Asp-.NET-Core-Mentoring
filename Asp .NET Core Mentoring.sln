@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp. NET Core Mentoring.Hel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp .NET Core Mentoring.Logging", "Asp .NET Core Mentoring Module1.Logging\Asp .NET Core Mentoring.Logging.csproj", "{05A143B9-0D91-4FE3-82A6-8CDCD69A3FB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp .NET Core Mentoring.UnitTests", "Asp .NET Core Mentoring.UnitTests\Asp .NET Core Mentoring.UnitTests.csproj", "{B7D427FD-CE4A-49FC-ADB3-D4220E8D3765}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp .NET Core Mentoring.UnitTests", "Asp .NET Core Mentoring.UnitTests\Asp .NET Core Mentoring.UnitTests.csproj", "{B7D427FD-CE4A-49FC-ADB3-D4220E8D3765}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp .NET Core Mentoring.ConsoleClient", "Asp .NET Core Mentoring.ConsoleClient\Asp .NET Core Mentoring.ConsoleClient.csproj", "{7CE64568-701D-49AD-9E9B-FFA427ABEC09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp .NET Core Mentoring.UnitTest.API", "Asp .NET Core Mentoring.UnitTest.API\Asp .NET Core Mentoring.UnitTest.API.csproj", "{8D6AB234-C61F-4DA8-B2EF-DDD5FC579AA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{B7D427FD-CE4A-49FC-ADB3-D4220E8D3765}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7D427FD-CE4A-49FC-ADB3-D4220E8D3765}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7D427FD-CE4A-49FC-ADB3-D4220E8D3765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CE64568-701D-49AD-9E9B-FFA427ABEC09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CE64568-701D-49AD-9E9B-FFA427ABEC09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CE64568-701D-49AD-9E9B-FFA427ABEC09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CE64568-701D-49AD-9E9B-FFA427ABEC09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D6AB234-C61F-4DA8-B2EF-DDD5FC579AA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D6AB234-C61F-4DA8-B2EF-DDD5FC579AA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D6AB234-C61F-4DA8-B2EF-DDD5FC579AA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D6AB234-C61F-4DA8-B2EF-DDD5FC579AA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
