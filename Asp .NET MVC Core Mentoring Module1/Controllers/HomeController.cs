@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using Asp_.NET_Core_Mentoring_Module1.Logging;
-using Microsoft.AspNetCore.Mvc;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
 {

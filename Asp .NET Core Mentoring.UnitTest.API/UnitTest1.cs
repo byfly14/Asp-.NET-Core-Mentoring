@@ -20,7 +20,7 @@ namespace Asp_.NET_Core_Mentoring.UnitTest.API
             using var client = new HttpClient();
             using var myApi = new MyAPI(client, false)
             {
-                BaseUri = new Uri("http://localhost:8088/")
+                BaseUri = new Uri("https://localhost:44302/")
             };
             var response = await myApi.Get1WithHttpMessagesAsync(1).ConfigureAwait(false);
         }

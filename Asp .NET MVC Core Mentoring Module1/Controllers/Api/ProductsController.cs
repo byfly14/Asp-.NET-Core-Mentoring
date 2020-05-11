@@ -5,7 +5,7 @@ using Asp_.NET_Core_Mentoring_Module1.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Asp_.NET_MVC_Core_Mentoring_Module1.Api.Controllers
+namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]

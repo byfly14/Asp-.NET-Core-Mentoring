@@ -1,20 +1,25 @@
 using System.Threading.Tasks;
+using Asp._NET_Core_Mentoring_Module1.Helpers;
 using Asp_.NET_Core_Mentoring_Module1.Data;
 using Asp_.NET_Core_Mentoring_Module1.Logging;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Helpers;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Middleware;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.OpenApi.Models;
 
 namespace Asp_.NET_MVC_Core_Mentoring_Module1
@@ -32,15 +37,13 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<NorthWindContext>(options =>
-                {
-                    options.UseSqlServer(Configuration.GetConnectionString("NorthWood"));
-                });
+            services.Configure<MvcOptions>(o => o.Filters.Add(new RequireHttpsAttribute()));
 
-            services.AddScoped(typeof(IRepository<>), typeof(SqlRepository<>));
-            services.AddScoped( typeof(IUnitOfWork), typeof(UnitOfWork));
-            services.AddScoped(typeof(IDiskImageCacheService), typeof(DiskImageCacheService));
-            services.AddScoped(typeof(IViewDataHelper), typeof(ViewDataHelper));
+            SetUpDataServices(services);
+
+            SetupHelperServices(services);
+
+            SetUpServices(services);
 
             services.AddMemoryCache();
 
@@ -50,11 +53,9 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
                     builder =>
                     {
                         builder.WithOrigins("http://localhost:4200",
-                            "http://localhost:8088");
+                            "https://localhost:44302");
                     });
             });
-
-
 
             services.AddControllersWithViews();
 
@@ -72,39 +73,101 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
             services.AddScoped<LoggingActionFilter>();
             services.AddLogging(logging =>
             {
-                logging.AddFile("Logs/ts-{Date}.log", fileSizeLimitBytes: 1024 * 1024, minimumLevel:LogLevel.Trace);
+                logging.AddFile("Logs/ts-{Date}.log", fileSizeLimitBytes: 1024 * 1024, minimumLevel: LogLevel.Trace);
                 logging.AddConsole();
                 logging.AddDebug();
                 logging.AddEventSourceLogger();
             });
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<IdentityDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(options =>
+                {
+                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                })
+                .AddOpenIdConnect(options =>
+                {
+                    options.Authority = "https://login.microsoftonline.com/" + Configuration["TenantId"];//tenant
+                    options.ClientId = Configuration["ClientId"];//client;
+                    options.ResponseType = OpenIdConnectResponseType.IdToken;
+                    options.CallbackPath = "/auth/signin-callback";
+                    options.SignedOutRedirectUri = "https://localhost:44302/";
+                    options.TokenValidationParameters.NameClaimType = "name";
+                })
+                .AddCookie();
+        }
+
+        private static void SetUpServices(IServiceCollection services)
+        {
+            services.AddScoped(typeof(IDiskImageCacheService), typeof(DiskImageCacheService));
+            services.AddScoped(typeof(IEmailService), typeof(EmailService));
+        }
+
+        private static void SetupHelperServices(IServiceCollection services)
+        {
+            services.AddScoped(typeof(IViewDataHelper), typeof(ViewDataHelper));
+            services.AddScoped(typeof(IImageHelper), typeof(ImageHelper));
+        }
+
+        private void SetUpDataServices(IServiceCollection services)
+        {
+            services.AddDbContextPool<NorthWindContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("NorthWood"));
+            });
+
+            services.AddDbContext<IdentityDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("Identity"),
+                    sqlOptions => { sqlOptions.MigrationsAssembly("Asp .NET MVC Core Mentoring"); });
+            });
+
+            services.AddScoped(typeof(IRepository<>), typeof(SqlRepository<>));
+            services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IConfiguration configuration)
         {
             if (env.IsDevelopment())
             {
                 app.UseExceptionHandler(errorApp =>
                 {
-                    errorApp.Run(  async context => await CustomErrorExceptionHandler(context));
+                    errorApp.Run(async context => await CustomErrorExceptionHandler(context));
                 });
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
             }
+
+            app.UseHsts(h => h.MaxAge(days: 365).IncludeSubdomains().Preload());
+            app.UseCsp(options => options.DefaultSources(s => s.Self())
+                .ImageSources(p => p.Self().CustomSources(configuration["ImageServerUrl"]))
+                .StyleSources(p => p.Self().CustomSources("https://localhost:44302").UnsafeInlineSrc = true)
+                .ScriptSources(p => p.Self().CustomSources("https://localhost:44302")));
+
+            app.UseXfo(o =>
+            {
+                o.Deny();
+                o.SameOrigin();
+            });
+
             app.UseCors(_myAllowSpecificOrigins);
 
             app.UseStatusCodePages();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseRouting();
 
             app.UseAuthorization();
-            
+
             app.UseMiddleware<ImageCacheMiddleware>();
             app.UseSwagger(o => o.SerializeAsV2 = true);
 

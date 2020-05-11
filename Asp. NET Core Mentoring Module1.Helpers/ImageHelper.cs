@@ -1,28 +1,51 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Asp._NET_Core_Mentoring_Module1.Helpers
 {
-    public static class ImageHelper
+    public class ImageHelper : IImageHelper
     {
-        private const int AmountOfGarbageBytes = 78;
+        private readonly IConfiguration _configuration;
 
-        public static string GetImageBase64String(byte[] bytes)
+        public ImageHelper(IConfiguration configuration)
         {
-            string base64Data;
-
-            var bytesArray = SkipGarbageBytes(bytes);
-
-            using var stream = new MemoryStream(bytesArray);
-            {
-                base64Data = Convert.ToBase64String(stream.ToArray());
-            }
-            return "data:image/bmp;base64," + base64Data;
+            _configuration = configuration;
         }
 
-        public static FileStream CreateImageFileStream(string filePath, byte[] imageBytes)
+        private const int AmountOfGarbageBytes = 78;
+
+        public string GetImageUrl(string fileName, byte[] bytes)
+        {
+            var bytesArray = SkipGarbageBytes(bytes);
+
+            var imageServerUrl = _configuration["ImageServerUrl"];
+            var imageStoragePath = _configuration["ImageStoragePath"];
+
+            if (!Path.HasExtension(fileName))
+            {
+                fileName = $"{fileName}.bmp";
+            }
+
+            var invalid = Path.GetInvalidFileNameChars();
+
+            fileName = invalid.Aggregate(fileName, (current, c) => current.Replace(c.ToString(), "_"));
+
+            var filePath = Path.Combine(imageStoragePath, fileName);
+            var imageUrl = Path.Combine(imageServerUrl, fileName);
+
+            if (File.Exists(filePath))
+            {
+                return imageUrl;
+            }
+
+            CreateImageFileStream(filePath, bytesArray);
+
+            return imageUrl;
+        }
+
+        public FileStream CreateImageFileStream(string filePath, byte[] imageBytes)
         {
             var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             var bytes = SkipGarbageBytes(imageBytes);
@@ -33,7 +56,7 @@ namespace Asp._NET_Core_Mentoring_Module1.Helpers
             return fs;
         }
 
-        public static async Task<FileStream> CreateImageFileStreamAsync(string filePath, byte[] imageBytes)
+        public async Task<FileStream> CreateImageFileStreamAsync(string filePath, byte[] imageBytes)
         {
             var fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             var bytes = SkipGarbageBytes(imageBytes);
@@ -48,5 +71,13 @@ namespace Asp._NET_Core_Mentoring_Module1.Helpers
         {
             return bytes.Skip(bytes[0] == 0x42 && bytes[1] == 0x4D ? 0 : AmountOfGarbageBytes).ToArray();
         }
+    }
+
+    public interface IImageHelper
+    {
+        string GetImageUrl(string fileName, byte[] bytes);
+        FileStream CreateImageFileStream(string filePath, byte[] imageBytes);
+        Task<FileStream> CreateImageFileStreamAsync(string filePath, byte[] imageBytes);
+
     }
 }

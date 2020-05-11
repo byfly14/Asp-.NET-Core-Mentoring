@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Asp._NET_Core_Mentoring_Module1.Helpers;
 using Asp_.NET_Core_Mentoring_Module1.Common.Entities;
 using Asp_.NET_Core_Mentoring_Module1.Data;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Controllers;
@@ -46,7 +47,9 @@ namespace Asp_.NET_Core_Mentoring.UnitTests
             _diskImageCacheService = new Mock<IDiskImageCacheService>();
             _diskImageCacheService.Setup(dis => dis.TryGetImagePath(It.IsAny<int>(), out It.Ref<string>.IsAny)).Returns(() => false);
 
-            _controller = new CategoriesController(unitOfWork.Object, _diskImageCacheService.Object);
+            var imageHelper = new Mock<IImageHelper>();
+
+            _controller = new CategoriesController(unitOfWork.Object, _diskImageCacheService.Object, imageHelper.Object);
         }
 
         [Test]

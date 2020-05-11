@@ -1,25 +1,30 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
 using Asp._NET_Core_Mentoring_Module1.Helpers;
 using Asp_.NET_Core_Mentoring_Module1.Common.Entities;
 using Asp_.NET_Core_Mentoring_Module1.Data;
 using Asp_.NET_Core_Mentoring_Module1.Logging;
 using Asp_.NET_MVC_Core_Mentoring_Module1.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
 {
     [ServiceFilter(typeof(LoggingActionFilter))]
+    [Authorize]
     public class CategoriesController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IDiskImageCacheService _diskImageCacheService;
+        private readonly IImageHelper _imageHelper;
 
-        public CategoriesController(IUnitOfWork unitOfWork, IDiskImageCacheService diskImageCacheService)
+        public CategoriesController(IUnitOfWork unitOfWork, 
+            IDiskImageCacheService diskImageCacheService, 
+            IImageHelper imageHelper)
         {
             _unitOfWork = unitOfWork;
             _diskImageCacheService = diskImageCacheService;
+            _imageHelper = imageHelper;
         }
 
         // GET: Categories
@@ -47,6 +52,7 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Upload(IFormFile uploadedFile, [FromRoute] int id)
         {
             var category = _unitOfWork.Repository<Categories>().GetById(id);
@@ -83,11 +89,11 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers
             return File(fs, contentType, fileName);
         }
 
-        private static FileStream GetImageFileStream(byte[] bytes)
+        private FileStream GetImageFileStream(byte[] bytes)
         {
             var filePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
-            return ImageHelper.CreateImageFileStream(filePath, bytes);
+            return _imageHelper.CreateImageFileStream(filePath, bytes);
         }
     }
 }

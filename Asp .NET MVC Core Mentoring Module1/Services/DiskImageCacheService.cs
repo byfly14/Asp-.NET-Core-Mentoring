@@ -11,13 +11,18 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Services
     {
         private readonly IMemoryCache _memoryCache;
         private readonly IConfiguration _config;
+        private readonly IImageHelper _imageHelper;
         private readonly ILogger _logger;
         private readonly int _maxTotalAmountOfCachedItems;
         
-        public DiskImageCacheService(IMemoryCache memoryCache, IConfiguration config, ILoggerFactory loggerFactory)
+        public DiskImageCacheService(IMemoryCache memoryCache, 
+            IConfiguration config,
+            ILoggerFactory loggerFactory,
+            IImageHelper imageHelper)
         {
             _memoryCache = memoryCache;
             _config = config;
+            _imageHelper = imageHelper;
             _logger = loggerFactory.CreateLogger(nameof(DiskImageCacheService));
 
             int.TryParse(_config["MaxTotalAmountOfCachedItems"], out _maxTotalAmountOfCachedItems);
@@ -30,8 +35,8 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Services
             var tempPath = _config["TempDirectoryPath"];
 
             var filePath = Path.Combine(string.IsNullOrWhiteSpace(tempPath) ? Path.GetTempPath() : tempPath, Path.GetRandomFileName());
-            
-            ImageHelper.CreateImageFileStream(filePath, bytes);
+
+            _imageHelper.CreateImageFileStream(filePath, bytes);
 
             var cacheEntryOptions = GetMemoryCacheEntryOptions();
 

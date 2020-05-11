@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp .NET Core Mentoring.Uni
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp .NET Core Mentoring.ConsoleClient", "Asp .NET Core Mentoring.ConsoleClient\Asp .NET Core Mentoring.ConsoleClient.csproj", "{7CE64568-701D-49AD-9E9B-FFA427ABEC09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asp .NET Core Mentoring.UnitTest.API", "Asp .NET Core Mentoring.UnitTest.API\Asp .NET Core Mentoring.UnitTest.API.csproj", "{8D6AB234-C61F-4DA8-B2EF-DDD5FC579AA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Asp .NET Core Mentoring.UnitTest.API", "Asp .NET Core Mentoring.UnitTest.API\Asp .NET Core Mentoring.UnitTest.API.csproj", "{8D6AB234-C61F-4DA8-B2EF-DDD5FC579AA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -13,7 +13,8 @@ namespace Asp_.NET_Core_Mentoring_Module1.Data
         private readonly DbSet<TEntity> _dbSet;
         private readonly ILogger _logger;
 
-        public SqlRepository(NorthWindContext context, ILoggerFactory loggerFactory)
+        public SqlRepository(NorthWindContext context, 
+            ILoggerFactory loggerFactory)
         {
             _context = context;
             _dbSet = _context.Set<TEntity>();

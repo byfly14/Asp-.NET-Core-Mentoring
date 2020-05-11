@@ -3,6 +3,8 @@
 @using Asp_.NET_MVC_Core_Mentoring_Module1.Helpers
 @model IEnumerable<Asp_.NET_Core_Mentoring_Module1.Common.Entities.Categories>
 
+@inject IImageHelper ImageHelper;
+
 @{
     ViewData["Title"] = "Categories";
 }
@@ -33,7 +35,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td style="display: grid">
-                    <img src="@ImageHelper.GetImageBase64String(item.Picture)" alt="Cannot display image." />
+                    <img src="@ImageHelper.GetImageUrl(item.CategoryName, item.Picture)" alt="Cannot display image." />
                     <download-image image-id="@item.CategoryId"></download-image>
                     @Html.DownloadImage(item.CategoryId)
                     <a asp-action="Upload" asp-route-id="@item.CategoryId">Upload New Category Image</a>

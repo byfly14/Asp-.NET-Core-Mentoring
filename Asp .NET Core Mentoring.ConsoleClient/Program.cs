@@ -45,7 +45,7 @@ namespace Asp_.NET_Core_Mentoring.ConsoleClient
         {
             using var client = new HttpClient
             {
-                BaseAddress = new Uri("http://localhost:8088/")
+                BaseAddress = new Uri("https://localhost:44302/")
             };
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(

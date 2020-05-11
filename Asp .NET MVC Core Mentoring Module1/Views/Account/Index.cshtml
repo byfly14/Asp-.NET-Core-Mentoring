@@ -1,0 +1,28 @@
+﻿@using Asp._NET_Core_Mentoring_Module1.Helpers
+@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityUser>
+
+@inject IImageHelper ImageHelper;
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName))
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

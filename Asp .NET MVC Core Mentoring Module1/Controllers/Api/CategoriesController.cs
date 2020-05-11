@@ -8,18 +8,22 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace Asp_.NET_MVC_Core_Mentoring_Module1.Api.Controllers
+namespace Asp_.NET_MVC_Core_Mentoring_Module1.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IImageHelper _imageHelper;
         private readonly ILogger _logger;
 
-        public CategoriesController(IUnitOfWork unitOfWork, ILoggerFactory factory)
+        public CategoriesController(IUnitOfWork unitOfWork,
+            ILoggerFactory factory, 
+            IImageHelper imageHelper)
         {
             _unitOfWork = unitOfWork;
+            _imageHelper = imageHelper;
             _logger = factory.CreateLogger(typeof(CategoriesController));
         }
 
@@ -67,7 +71,7 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Api.Controllers
 
             var filePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
 
-            var fs = await ImageHelper.CreateImageFileStreamAsync(filePath, category.Picture).ConfigureAwait(false);
+            var fs = await _imageHelper.CreateImageFileStreamAsync(filePath, category.Picture).ConfigureAwait(false);
 
             return Ok(fs);
         }
@@ -91,7 +95,7 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1.Api.Controllers
             _unitOfWork.Context.SaveChanges();
 
             var filePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
-            var fs = ImageHelper.CreateImageFileStream(filePath, category.Picture);
+            var fs = _imageHelper.CreateImageFileStream(filePath, category.Picture);
 
             var uri = Url.Link("GetImage", new { id = category.CategoryId });
 
