@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  asp.netmvccorementoring:
+    image: ${DOCKER_REGISTRY-}aspnetmvccorementoring
+    build:
+      context: .
+      dockerfile: Asp .NET MVC Core Mentoring Module1/Dockerfile
+    environment:
+        -NorthWood: "Server=tcp:{sql_azure_server_ip},1433;Initial Catalog={catalog};Persist Security Info=False;User ID={db_login};Password={pw};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+        -Identity: "Server=tcp:{sql_azure_server_ip},1433;Initial Catalog={catalog};Persist Security Info=False;User ID={db_login};Password={pw};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+        -Email: ""
+        -Password: ""

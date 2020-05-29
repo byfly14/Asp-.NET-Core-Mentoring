@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -57,7 +58,7 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
                     });
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
             services.AddMvc();
 
@@ -84,10 +85,10 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
                 .AddDefaultTokenProviders();
 
             services.AddAuthentication(options =>
-                {
-                    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                })
+            {
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
                 .AddOpenIdConnect(options =>
                 {
                     options.Authority = "https://login.microsoftonline.com/" + Configuration["TenantId"];//tenant
@@ -162,10 +163,13 @@ namespace Asp_.NET_MVC_Core_Mentoring_Module1
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
             app.UseAuthentication();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseMiddleware<ImageCacheMiddleware>();
